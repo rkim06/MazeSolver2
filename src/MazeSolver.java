@@ -63,6 +63,18 @@ public class MazeSolver {
     public ArrayList<MazeCell> solveMazeDFS() {
         // TODO: Use DFS to solve the maze
         // Explore the cells in the order: NORTH, EAST, SOUTH, WEST
+
+        Stack <MazeCell> cellStack = new Stack <MazeCell>();
+        cellStack.push(maze.getStartCell());
+
+        MazeCell currentCell = maze.getStartCell();
+
+        //when to setParent?
+
+        while(cellStack.size()!= 0){
+
+        }
+
         return null;
     }
 
