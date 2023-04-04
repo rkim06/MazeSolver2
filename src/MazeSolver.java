@@ -5,6 +5,7 @@
  */
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 public class MazeSolver {
     private Maze maze;
@@ -28,8 +29,31 @@ public class MazeSolver {
      */
     public ArrayList<MazeCell> getSolution() {
         // TODO: Get the solution from the maze
+        Stack<MazeCell> cellStack = new Stack<MazeCell>();
+        ArrayList<MazeCell> cellList = new ArrayList<MazeCell>();
+
+        MazeCell currentCell = maze.getEndCell();
+        MazeCell end = maze.getEndCell();
+        MazeCell start = maze.getStartCell();
+
+        cellStack.push(currentCell.getParent());
+
+        while(!currentCell.equals(start)){
+            //adds the parent of the cell to the stack
+            //the parent is the previous cell
+            currentCell = currentCell.getParent();
+            cellStack.push(currentCell);
+        }
+
+        //utilizes stack to flip the order to correct order
+        //puts the cells into an arraylist
+        for(int i = 0; i<cellStack.size(); i++){
+            cellList.add(cellStack.pop());
+        }
+
         // Should be from start to end cells
-        return null;
+        //returns the arrayList of cells
+        return cellList;
     }
 
     /**
