@@ -36,7 +36,7 @@ public class MazeSolver {
         MazeCell end = maze.getEndCell();
         MazeCell start = maze.getStartCell();
 
-        cellStack.push(currentCell.getParent());
+        cellStack.push(currentCell);
 
         while(!currentCell.equals(start)){
             //adds the parent of the cell to the stack
@@ -47,7 +47,14 @@ public class MazeSolver {
 
         //utilizes stack to flip the order to correct order
         //puts the cells into an arraylist
-        for(int i = 0; i<cellStack.size(); i++){
+//        for(int i = 0; i<cellStack.size(); i++){
+//            cellList.add(cellStack.pop());
+//            i--;
+//        }
+//
+//        cellStack.push(cellStack.pop().getParent());
+
+        while(cellStack.size()>0){
             cellList.add(cellStack.pop());
         }
 
@@ -85,6 +92,16 @@ public class MazeSolver {
     public ArrayList<MazeCell> solveMazeBFS() {
         // TODO: Use BFS to solve the maze
         // Explore the cells in the order: NORTH, EAST, SOUTH, WEST
+        MazeCell end = maze.getEndCell();
+        MazeCell start = maze.getStartCell();
+        MazeCell currentCell = start;
+
+        MazeCell <Stack> mazeStack = new MazeCell <Stack>();
+
+        while(currentCell != end){
+
+        }
+
         return null;
     }
 
