@@ -5,6 +5,7 @@
  */
 
 import java.util.ArrayList;
+import java.util.Queue;
 import java.util.Stack;
 
 public class MazeSolver {
@@ -45,15 +46,8 @@ public class MazeSolver {
             cellStack.push(currentCell);
         }
 
-        //utilizes stack to flip the order to correct order
-        //puts the cells into an arraylist
-//        for(int i = 0; i<cellStack.size(); i++){
-//            cellList.add(cellStack.pop());
-//            i--;
-//        }
-//
-//        cellStack.push(cellStack.pop().getParent());
-
+        //this while loop utilizes the stack's popping property
+        //to reverse the stack and add back to arraylist in proper order
         while(cellStack.size()>0){
             cellList.add(cellStack.pop());
         }
@@ -67,28 +61,6 @@ public class MazeSolver {
      * Performs a Depth-First Search to solve the Maze
      * @return An ArrayList of MazeCells in order from the start to end cell
      */
-    public ArrayList<MazeCell> solveMazeDFS() {
-        // TODO: Use DFS to solve the maze
-        // Explore the cells in the order: NORTH, EAST, SOUTH, WEST
-
-        Stack <MazeCell> cellStack = new Stack <MazeCell>();
-        cellStack.push(maze.getStartCell());
-
-        MazeCell currentCell = maze.getStartCell();
-
-        //when to setParent?
-
-        while(cellStack.size()!= 0){
-
-        }
-
-        return null;
-    }
-
-    /**
-     * Performs a Breadth-First Search to solve the Maze
-     * @return An ArrayList of MazeCells in order from the start to end cell
-     */
     public ArrayList<MazeCell> solveMazeBFS() {
         // TODO: Use BFS to solve the maze
         // Explore the cells in the order: NORTH, EAST, SOUTH, WEST
@@ -96,13 +68,106 @@ public class MazeSolver {
         MazeCell start = maze.getStartCell();
         MazeCell currentCell = start;
 
-        MazeCell <Stack> mazeStack = new MazeCell <Stack>();
+        MazeCell north;
+        MazeCell east;
+        MazeCell south;
+        MazeCell west;
 
-        while(currentCell != end){
+        Queue<MazeCell> mazeQueue= new Queue <MazeCell>();
 
+        while(mazeQueue.size() >= 0){
+            //if the north cell is a valid cell add to stack
+            if(maze.isValidCell(currentCell.getRow()-1, currentCell.getCol())){
+                north = maze.getCell(currentCell.getRow()-1, currentCell.getCol());
+
+                mazeQueue.add(north);
+                north.setParent(currentCell);
+            }
+            //if the east cell is a valid cell add to stack
+            if(maze.isValidCell(currentCell.getRow(), currentCell.getCol()+1)){
+                east = maze.getCell(currentCell.getRow(), currentCell.getCol()+1);
+
+                mazeQueue.add(east);
+                east.setParent(currentCell);
+            }
+            //if the south cell is a valid cell add to stack
+            if(maze.isValidCell(currentCell.getRow()+1, currentCell.getCol())){
+                south = maze.getCell(currentCell.getRow()+1, currentCell.getCol());
+
+                mazeQueue.add(south);
+                south.setParent(currentCell);
+            }
+            //if the west cell is a valid cell add to stack
+            if(maze.isValidCell(currentCell.getRow(), currentCell.getCol()-1)){
+                west = maze.getCell(currentCell.getRow(), currentCell.getCol()-1);
+
+                mazeQueue.add(west);
+                west.setParent(currentCell);
+            }
         }
 
-        return null;
+        currentCell = mazeQueue.remove();
+
+        return getSolution();
+    }
+
+    /**
+     * Performs a Breadth-First Search to solve the Maze
+     * @return An ArrayList of MazeCells in order from the start to end cell
+     */
+    public ArrayList<MazeCell> solveMazeDFS() {
+        // TODO: Use DFS to solve the maze
+        // Explore the cells in the order: NORTH, EAST, SOUTH, WEST
+        MazeCell end = maze.getEndCell();
+        MazeCell start = maze.getStartCell();
+        MazeCell currentCell = start;
+
+        MazeCell north;
+        MazeCell east;
+        MazeCell south;
+        MazeCell west;
+
+        Stack <MazeCell> mazeStack = new Stack <MazeCell>();
+        mazeStack.push(start);
+
+        //adds valid cells to a stack of cells
+        //adds them in backwards order to pop out in right precedence
+        while(currentCell != end){
+
+            //if the west cell is a valid cell add to stack
+            if(maze.isValidCell(currentCell.getRow(), currentCell.getCol()-1)){
+                west = maze.getCell(currentCell.getRow(), currentCell.getCol()-1);
+
+                mazeStack.push(west);
+                west.setParent(currentCell);
+            }
+            //if the south cell is a valid cell add to stack
+            if(maze.isValidCell(currentCell.getRow()+1, currentCell.getCol())){
+                south = maze.getCell(currentCell.getRow()+1, currentCell.getCol());
+
+                mazeStack.push(south);
+                south.setParent(currentCell);
+            }
+            //if the east cell is a valid cell add to stack
+            if(maze.isValidCell(currentCell.getRow(), currentCell.getCol()+1)){
+                east = maze.getCell(currentCell.getRow(), currentCell.getCol()+1);
+
+                mazeStack.push(east);
+                east.setParent(currentCell);
+            }
+            //if the north cell is a valid cell add to stack
+            if(maze.isValidCell(currentCell.getRow()-1, currentCell.getCol())){
+                north = maze.getCell(currentCell.getRow()-1, currentCell.getCol());
+
+                mazeStack.push(north);
+                north.setParent(currentCell);
+            }
+
+            //sets the next cell (by precedence) to the
+            currentCell = mazeStack.pop();
+        }
+
+        return getSolution();
     }
 
     public static void main(String[] args) {

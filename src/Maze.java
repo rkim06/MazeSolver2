@@ -148,7 +148,7 @@ public class Maze {
     public boolean isValidCell(int row, int col) {
         // TODO: Complete this function
 
-        //cell is not valid if it has alread been explored
+        //cell is not valid if it has already been explored
         //or is a wall so cannot be
         if(mazeGrid[row][col].isExplored() == true){
             return false;
